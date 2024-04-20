@@ -1,0 +1,19 @@
+#ALERTA: Antes de usar este Dockerfile es necesaio agregar output: "export" en el archivo next.config.mjs de esta manera
+
+#const nextConfig = {
+#    output: "export",
+#};
+
+#Esto permite crear un build de archivos estáticos que se guardan en la capeta out
+#Luego correr npm run build y ahí sí crear la imagen con docker build
+
+
+#Usa imagen liviana que tiene nginx
+FROM nginx:alpine
+#Copia el build generado localmente que se ubica en la carpeta out y lo pega en la carpeta html de la imagen
+#Esta carpeta es la que usará nginx por defecto para servir el index.html estático
+COPY out/ /usr/share/nginx/html
+
+#Construir imagen de esta manera: docker build -f .\Dockerfile.static -t static-react-app .
+#Correr contenedor así: docker run -d --name static-react-app-contenedor -p 8080:80 static-react-app
+#Probar en localhost:8080
